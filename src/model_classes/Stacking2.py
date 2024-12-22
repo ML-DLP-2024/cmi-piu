@@ -4,12 +4,9 @@ from xgboost import XGBRegressor # type: ignore
 from catboost import CatBoostRegressor # type: ignore
 from sklearn.ensemble import StackingRegressor
 from .BaseModelClass import BaseModelClass
+from src.utils.cat_features import CAT_FEATURES
 
 DEFAULT_SEED = 42
-
-DEFAULT_CAT_FEATURES = ['Basic_Demos-Enroll_Season', 'CGAS-Season', 'Physical-Season', 
-          'Fitness_Endurance-Season', 'FGC-Season', 'BIA-Season', 
-          'PAQ_A-Season', 'PAQ_C-Season', 'SDS-Season', 'PreInt_EduHx-Season']
 
 class Stacking2(BaseModelClass):
     def __init__(self, parameters: dict[str, str]):
@@ -50,7 +47,6 @@ class Stacking2(BaseModelClass):
             'iterations': int(parameters.get('catboost_iterations', 200)),
             'random_seed': int(parameters.get('catboost_random_seed', DEFAULT_SEED)),
             'verbose': 0,
-            'cat_features': parameters.get('cat_features', DEFAULT_CAT_FEATURES),
             'l2_leaf_reg': float(parameters.get('catboost_l2_leaf_reg', 10)),  # Increase this value
             'task_type': 'GPU',
         }
@@ -58,7 +54,7 @@ class Stacking2(BaseModelClass):
         # Create model instances
         Light = LGBMRegressor(**LGBM_Params)
         XGB_Model = XGBRegressor(**XGB_Params)
-        CatBoost_Model = CatBoostRegressor(**CatBoost_Params)
+        CatBoost_Model = CatBoostRegressor(**CatBoost_Params, cat_features=CAT_FEATURES)
 
         # Combine models using Voting Regressor
         stacking_model = StackingRegressor(estimators=[ # type: ignore

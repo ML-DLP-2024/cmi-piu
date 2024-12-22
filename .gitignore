@@ -62,3 +62,6 @@ kaggle.json
 temp/
 scratch/
 notebooks/temp/
+
+events.out.tfevents
+events.out.tfevents.*

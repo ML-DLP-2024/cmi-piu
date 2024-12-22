@@ -36,6 +36,7 @@ class FeatureSelectionPreprocessor(BasePreprocessor):
         ]
         featuresCols.extend( DataProcessingContext.get_instance().get("autoencoder_columns", []) )
         featuresCols.extend( DataProcessingContext.get_instance().get("alfe_columns", []) )
+        featuresCols.append('id')
 
         df = dfs[0]
 

@@ -20,6 +20,8 @@ class Solution1(BaseSolution):
         pipelines : list[BasePipeline] = [
             Pipeline("0", PipelinePreviousStage('loader', ['describing_timeseries']), []),
 
+            Pipeline("0.1", PipelinePreviousStage('loader', ['tabular']), []),
+
             Pipeline("1", PipelinePreviousStage('pipelines', ['0']), [
                 Preprocessor("autoencoder", {
                     "encoding_dim": "50",
@@ -28,7 +30,7 @@ class Solution1(BaseSolution):
                 }),
             ]),
 
-            Pipeline("2", PipelinePreviousStage('loader', ['tabular']), [
+            Pipeline("2", PipelinePreviousStage('pipelines', ['0.1']), [
                 Preprocessor("basic_feature_engineering", {}),
             ]),
 
@@ -50,7 +52,18 @@ class Solution1(BaseSolution):
                 Preprocessor("drop_na", {}),
             ]),
 
-            Pipeline("4.2", PipelinePreviousStage('pipelines', ['0']), [
+            Pipeline("4.2", PipelinePreviousStage('pipelines', ['0', '0.1']), [
+                Preprocessor("merge", {}),
+                Preprocessor("feature_selection_2", {}),
+            ]),
+
+            Pipeline("4_test", PipelinePreviousStage('pipelines', ['1', '2', '3']), [
+                Preprocessor("union_merge", {}),
+                Preprocessor("feature_selection", {}),
+            ]),
+
+            Pipeline("4.2_test", PipelinePreviousStage('pipelines', ['0', '0.1']), [
+                Preprocessor("union_merge", {}),
                 Preprocessor("feature_selection_2", {}),
             ]),
         ]
@@ -66,16 +79,25 @@ class Solution1(BaseSolution):
 
         # output_pipeline_names = [
         #     '7' # for Ensemble1 and Stacking1 (training)
-        #     '4.2' # for Ensemble2, Stacking2, RandomEnsemble (both training and prediction)
-        #     '5' # for Ensemble1 and Stacking1 (prediction)
+        #     '4.2' # for Ensemble2, Stacking2, RandomEnsemble (training)
+        #     '4.2_test' # for Ensemble2, Stacking2, RandomEnsemble (prediction)
+        #     '4_test' # for Ensemble1 and Stacking1 (prediction)
         # ]
 
         trainer1 = Trainer('trainer1')
-        sub1 = trainer1.train(train_preprocessed['7'][0], test_preprocessed['5'][0], ensemble1)
-        sub2 = trainer1.train(train_preprocessed['7'][0], test_preprocessed['5'][0], stacking1)
-        sub3 = trainer1.train(train_preprocessed['4.2'][0], test_preprocessed['4.2'][0], ensemble2)
-        sub4 = trainer1.train(train_preprocessed['4.2'][0], test_preprocessed['4.2'][0], stacking2)
-        sub5 = trainer1.train(train_preprocessed['4.2'][0], test_preprocessed['4.2'][0], random_ensemble)
+        print("Training Ensemble1")
+        sub1 = trainer1.train(train_preprocessed['7'][0], test_preprocessed['4_test'][0], ensemble1)
+        print("Training Stacking1")
+        sub2 = trainer1.train(train_preprocessed['7'][0], test_preprocessed['4_test'][0], stacking1)
+        
+        print("Training Ensemble2")
+        sub3 = trainer1.train(train_preprocessed['4.2'][0], test_preprocessed['4.2_test'][0], ensemble2)
+        print("Training Stacking2")
+        sub4 = trainer1.train(train_preprocessed['4.2'][0], test_preprocessed['4.2_test'][0], stacking2)
+        print("Training RandomEnsemble")
+        sub5 = trainer1.train(train_preprocessed['4.2'][0], test_preprocessed['4.2_test'][0], random_ensemble)
+
+        print("Major Voting...")
 
         sub1 = sub1.sort_values(by='id').reset_index(drop=True) # type: ignore
         sub2 = sub2.sort_values(by='id').reset_index(drop=True) # type: ignore

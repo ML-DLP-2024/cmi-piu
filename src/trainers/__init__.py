@@ -1,7 +1,7 @@
 from .BaseTrainer import BaseTrainer
 from .Trainer1 import Trainer1
 
-from typing import Any
+from typing import Any, override
 import pandas as pd
 
 class Trainer(BaseTrainer):
@@ -18,6 +18,7 @@ class Trainer(BaseTrainer):
             raise ValueError(f"No trainer named {name} - available options are {self.CATALOG.keys()}")
         super().__init__(name)
     
-    def train(self, train: pd.DataFrame, test: pd.DataFrame, model_class: Any) -> pd.DataFrame:
-        return self.trainer.train(train, test, model_class)
+    @override
+    def do_train(self, train: pd.DataFrame, test: pd.DataFrame, model_class: Any) -> pd.DataFrame:
+        return self.trainer.do_train(train, test, model_class)
 

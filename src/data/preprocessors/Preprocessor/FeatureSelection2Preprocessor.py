@@ -2,6 +2,7 @@ from typing import override
 import pandas as pd
 from .BasePreprocessor import BasePreprocessor
 from src.utils.context import DataProcessingContext
+from src.utils.cat_features import CAT_FEATURES
 
 class FeatureSelection2Preprocessor(BasePreprocessor):
     @override
@@ -31,7 +32,21 @@ class FeatureSelection2Preprocessor(BasePreprocessor):
             'SMM_Height', 'Muscle_to_Fat', 'Hydration_Status', 'ICW_TBW', 'BMI_PHR'
         ]
         featuresCols.extend( DataProcessingContext.get_instance().get("time_series_cols", []) )
+        featuresCols.append('id')
+        featuresCols.extend(CAT_FEATURES)
 
         df = dfs[0]
+
+        for c in CAT_FEATURES:
+            df[c] = df[c].fillna('Missing') # type: ignore
+            df[c] = df[c].astype('category')
+        
+        def create_mapping(column: str):
+            unique_values = df[column].unique() # type: ignore
+            return {value: idx for idx, value in enumerate(unique_values)} # type: ignore
+        
+        for c in CAT_FEATURES:
+            df[c] = df[c].map(create_mapping(c)) # type: ignore
+            df[c] = df[c].astype(int)
 
         return [df[list(col for col in featuresCols if col in df.columns)]]

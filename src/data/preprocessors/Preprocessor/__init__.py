@@ -5,6 +5,7 @@ from .BasePreprocessor import BasePreprocessor
 from .AutoEncoderPreprocessor import AutoEncoderPreprocessor
 from .BasicTabularFeatureEngineeringPreprocessor import BasicTabularFeatureEngineeringPreprocessor
 from .MergePreprocessor import MergePreprocessor
+from .UnionMergePreprocessor import UnionMergePreprocessor
 from .FeatureSelectionPreprocessor import FeatureSelectionPreprocessor
 from .InfToNaNPreprocessor import InfToNanPreprocessor
 from .DropNAPreprocessor import DropNAPreprocessor
@@ -23,6 +24,7 @@ class Preprocessor(BasePreprocessor):
         | type[InfToNanPreprocessor]
         | type[DropNAPreprocessor]
         | type[FeatureSelection2Preprocessor]
+        | type[UnionMergePreprocessor]
     ] = {
         "autoencoder": AutoEncoderPreprocessor,
         "basic_feature_engineering": BasicTabularFeatureEngineeringPreprocessor,
@@ -31,6 +33,7 @@ class Preprocessor(BasePreprocessor):
         "inf_to_nan": InfToNanPreprocessor,
         "drop_na": DropNAPreprocessor,
         "feature_selection_2": FeatureSelection2Preprocessor,
+        "union_merge": UnionMergePreprocessor,
     }
 
     @classmethod

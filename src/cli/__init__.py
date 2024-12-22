@@ -1,5 +1,6 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning) # Ignore FutureWarning from sklearn or pandas or something
+warnings.simplefilter(action='ignore', category=UserWarning) # Ignore UserWarning from cuda or something
 
 import click
 from tabulate import tabulate

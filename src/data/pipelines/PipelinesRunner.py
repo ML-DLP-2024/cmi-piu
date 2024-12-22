@@ -57,6 +57,7 @@ class PipelinesRunner:
 
                     for pp in pipeline.pps:
                         dfs = pp.process(dfs)
+                dfs = [df.copy() for df in dfs]
                 print(f"Running pipeline {pipeline.name}")
                 pipeline_execution_result_by_name[pipeline.name] = pipeline.run_preprocessors(dfs)
             i += 1

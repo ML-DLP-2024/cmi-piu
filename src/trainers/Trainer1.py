@@ -93,5 +93,5 @@ class Trainer1(BaseTrainer):
         super().__init__("trainer1")
 
     @override
-    def train(self, train: pd.DataFrame, test: pd.DataFrame, model_class: Any) -> pd.DataFrame:
+    def do_train(self, train: pd.DataFrame, test: pd.DataFrame, model_class: Any) -> pd.DataFrame:
         return TrainML1(train, test, model_class)

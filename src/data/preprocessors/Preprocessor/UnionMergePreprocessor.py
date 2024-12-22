@@ -1,9 +1,8 @@
 from typing import override
 import pandas as pd
-import numpy as np
 from .BasePreprocessor import BasePreprocessor
 
-class InfToNanPreprocessor(BasePreprocessor):
+class UnionMergePreprocessor(BasePreprocessor):
     """
     Before this: any dfs!
     """
@@ -13,7 +12,11 @@ class InfToNanPreprocessor(BasePreprocessor):
         pass
 
     def process(self, dfs: list[pd.DataFrame]) -> list[pd.DataFrame]:
-        df = dfs[0]
-        # if np.any(np.isinf(df)):
-        df = df.replace([np.inf, -np.inf], np.nan) # type: ignore
+        df = dfs.pop(0)
+        while len(dfs) > 0:
+            df2 = dfs.pop(0)
+            df = pd.merge( # type: ignore
+                df, df2,
+                on='id', how='outer'
+            )
         return [df]

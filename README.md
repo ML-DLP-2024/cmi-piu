@@ -139,3 +139,6 @@ Run the solution:
 ```sh
 python manage.py solutions run solution1 --source-type kaggle --source-name child-mind-institute-problematic-internet-use
 ```
+
+Necessary configurations can be tuned in `<project_root>/config.json`
+(the file will automatically be created after `solution1` is run).
