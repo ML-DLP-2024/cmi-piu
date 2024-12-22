@@ -1,21 +1,21 @@
 from typing import Literal
-from .Pipeline import Pipeline
+from .Pipeline import BasePipeline
 import pandas as pd
 from src.data.loaders.DataLoader import DataLoader
 from src.data.sources.DataPuller import DataPuller
 from src.data.sources.DataSource import DataSource
 
 class PipelinesRunner:
-    def __init__(self, pipelines: list[Pipeline], source: DataSource, output_pipeline_name: str) -> None:
+    def __init__(self, pipelines: list[BasePipeline], source: DataSource) -> None:
+        """Remember: by default, the last pipeline is the output pipeline"""
         self.pipelines = pipelines
         self.source = source
-        self.output_pipeline_name = output_pipeline_name
 
-    def run(self, dataset: Literal['train', 'test']):
+    def run(self, dataset: Literal['train', 'test']) -> dict[str, list[pd.DataFrame]]:
         puller = DataPuller()
         data_dir = puller.get_data_dir(puller.require_data(self.source))
 
-        def order_of_execution(p: Pipeline) -> int:
+        def order_of_execution(p: BasePipeline) -> int:
             return 0 if p.prev.type == 'loader' else 1
         
         self.pipelines.sort(key=order_of_execution)
@@ -29,6 +29,9 @@ class PipelinesRunner:
         while not done:
             done = True
             for pipeline in self.pipelines:
+                if pipeline_execution_result_by_name.get(pipeline.name, None) is not None:
+                    # Pipeline already executed
+                    continue
                 if pipeline.prev.type == 'loader':
                     df = loader_execution_result_by_name.get(pipeline.name, None)
                     if df is None:
@@ -52,9 +55,9 @@ class PipelinesRunner:
                     if run_later:
                         continue
 
-                    print(f"Running pipeline {pipeline.name}")
                     for pp in pipeline.pps:
                         dfs = pp.process(dfs)
+                print(f"Running pipeline {pipeline.name}")
                 pipeline_execution_result_by_name[pipeline.name] = pipeline.run_preprocessors(dfs)
             i += 1
             if i > limit:
@@ -63,4 +66,4 @@ class PipelinesRunner:
         if not done:
             raise RuntimeError("Pipeline execution did not converge - there is a loop.")
         
-        return pipeline_execution_result_by_name[self.output_pipeline_name]
+        return pipeline_execution_result_by_name

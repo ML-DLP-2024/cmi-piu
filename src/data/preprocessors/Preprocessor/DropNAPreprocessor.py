@@ -4,6 +4,8 @@ import pandas as pd
 class DropNAPreprocessor(BasePreprocessor):
     """
     Before this: any dfs!
+    NOTE: This preprocessor is not supposed to be used in the data pipeline for inference,
+    since it strips out rows with NaN values.
     """
 
     def do_load_parameters(self, parameters: dict[str, str]) -> None:

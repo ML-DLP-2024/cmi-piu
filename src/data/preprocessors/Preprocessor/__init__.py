@@ -8,6 +8,7 @@ from .MergePreprocessor import MergePreprocessor
 from .FeatureSelectionPreprocessor import FeatureSelectionPreprocessor
 from .InfToNaNPreprocessor import InfToNanPreprocessor
 from .DropNAPreprocessor import DropNAPreprocessor
+from .FeatureSelection2Preprocessor import FeatureSelection2Preprocessor
 
 class PreprocessorTypedDict(TypedDict):
     name: str
@@ -21,6 +22,7 @@ class Preprocessor(BasePreprocessor):
         | type[FeatureSelectionPreprocessor]
         | type[InfToNanPreprocessor]
         | type[DropNAPreprocessor]
+        | type[FeatureSelection2Preprocessor]
     ] = {
         "autoencoder": AutoEncoderPreprocessor,
         "basic_feature_engineering": BasicTabularFeatureEngineeringPreprocessor,
@@ -28,6 +30,7 @@ class Preprocessor(BasePreprocessor):
         "feature_selection": FeatureSelectionPreprocessor,
         "inf_to_nan": InfToNanPreprocessor,
         "drop_na": DropNAPreprocessor,
+        "feature_selection_2": FeatureSelection2Preprocessor,
     }
 
     @classmethod

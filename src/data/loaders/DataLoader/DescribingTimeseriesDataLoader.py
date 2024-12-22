@@ -4,6 +4,7 @@ from .BaseDataLoader import BaseDataLoader
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 from typing import override
+from src.utils.context import DataProcessingContext
 
 class DescribingTimeseriesDataLoader(BaseDataLoader):
     @override
@@ -22,6 +23,7 @@ class DescribingTimeseriesDataLoader(BaseDataLoader):
             stats, indexes = zip(*results)
             
             df = pd.DataFrame(stats, columns=[f"stat_{i}" for i in range(len(stats[0]))])
+            DataProcessingContext.get_instance()["time_series_cols"] = df.columns.to_list()
             df['id'] = indexes
             return df
         

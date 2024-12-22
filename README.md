@@ -1,5 +1,14 @@
 # CMI-PIU ML Project
 
+- [CMI-PIU ML Project](#cmi-piu-ml-project)
+  - [Introduction](#introduction)
+  - [Setup](#setup)
+    - [Setup: Environment Variables](#setup-environment-variables)
+    - [Setup: Kaggle API Key](#setup-kaggle-api-key)
+  - [Setup: Install Libraries](#setup-install-libraries)
+  - [Setup: Download the Data](#setup-download-the-data)
+  - [Run](#run)
+
 ## Introduction
 
 This is our Machine Learning (ML) project aimed at proposing a solution
@@ -20,7 +29,7 @@ We are a team of students at UET - VNU.
 
 ### Setup: Environment Variables
 
-In the project root, copy content of the `.env.example` file into
+In the project root, copy content of the`.env.example` file into
 a new file named `.env`, then fill in the environment variables
 as per the instructions.
 
@@ -34,6 +43,17 @@ below.)
 
 To get and install the Kaggle API key, refer to the instructions
 at <https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#api-credentials>.
+
+## Setup: Install Libraries
+
+Create a new Python virtual environment, activate
+it and install the required packages.
+
+```sh
+virtualenv venv
+source ./venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## Setup: Download the Data
 
@@ -91,10 +111,24 @@ python manage.py data delete kaggle child-mind-institute-problematic-internet-us
 
 ## Run
 
-Run the data preprocessing pipeline:
+List all the solutions:
 
 ```sh
-python manage.py data preprocess --out preprocessed.csv --source-type kaggle --source-name child-mind-institute-problematic-internet-use
+python -m manage.py solutions list
 ```
 
-TODO: Run model???
+Example output:
+
+```plain
++-----------+
+|   name    |
++-----------+
+| solution1 |
++-----------+
+```
+
+Run the solution:
+
+```sh
+python -m manage.py solutions run solution1 --source-type kaggle --source-name child-mind-institute-problematic-internet-use
+```
