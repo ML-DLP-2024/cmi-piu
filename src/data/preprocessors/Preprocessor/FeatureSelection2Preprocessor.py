@@ -34,4 +34,4 @@ class FeatureSelection2Preprocessor(BasePreprocessor):
 
         df = dfs[0]
 
-        return [df[featuresCols]]
+        return [df[list(col for col in featuresCols if col in df.columns)]]
