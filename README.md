@@ -44,6 +44,13 @@ below.)
 To get and install the Kaggle API key, refer to the instructions
 at <https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#api-credentials>.
 
+Note that on Linux you have to set the appropriate permissions for
+the file.
+
+```sh
+chmod 600 ~/.config/kaggle/kaggle.json
+```
+
 ## Setup: Install Libraries
 
 Create a new Python virtual environment, activate
