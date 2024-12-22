@@ -26,9 +26,9 @@ def TrainML1(train: pd.DataFrame, test: pd.DataFrame, model_class: Any):
     SEED = 42
     n_splits = 5
 
-    train = train.drop(['id'], axis=1)
-    test_data = test.drop(['id'], axis=1)
-    X = train.drop(['sii'], axis=1)
+    train = train.drop(['id'], axis=1, errors='ignore')
+    test_data = test.drop(['id'], axis=1, errors='ignore')
+    X = train.drop(['sii'], axis=1, errors='ignore')
     y = train['sii']
 
     SKF = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=SEED)

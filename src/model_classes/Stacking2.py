@@ -56,7 +56,7 @@ class Stacking2(BaseModelClass):
         }
 
         # Create model instances
-        Light = LGBMRegressor(**LGBM_Params, verbose=-1, n_estimators=300)
+        Light = LGBMRegressor(**LGBM_Params)
         XGB_Model = XGBRegressor(**XGB_Params)
         CatBoost_Model = CatBoostRegressor(**CatBoost_Params)
 

@@ -24,6 +24,8 @@ class Stacking1(BaseModelClass):
             'lambda_l2': float(parameters.get('lgbm_lambda_l2', 0.01)),  # Increased from 2.68e-06
             'random_state': int(parameters.get('lgbm_random_state', DEFAULT_SEED)),
             'device': 'cpu',
+            'n_estimators': int(parameters.get('lgbm_n_estimators', 300)),
+            'verbose': -1,
         }
 
         XGB_Params: dict[str, Any] = {
@@ -49,7 +51,7 @@ class Stacking1(BaseModelClass):
         }
 
         # Create model instances
-        Light = LGBMRegressor(**LGBM_Params, verbose=-1, n_estimators=300)
+        Light = LGBMRegressor(**LGBM_Params)
         XGB_Model = XGBRegressor(**XGB_Params)
         CatBoost_Model = CatBoostRegressor(**CatBoost_Params)
 

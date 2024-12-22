@@ -8,9 +8,7 @@ class BaseModelClass:
     def __init__(self, name: str, parameters: dict[str, str]):
         self.name = name
         self.parameters = dict(parameters)
-        self.model = None
     
     def create(self) -> Any:
         """Creates the model class and returns it along with the new (hyper) parameters."""
-        self.model = self.do_create(self.parameters)
-        return self.model
+        return self.do_create(self.parameters)
