@@ -76,7 +76,7 @@ class DataPuller:
     
     def __save_history(self):
         with open(self.data_pull_history_file_path, "w") as f:
-            json.dump([{"type": entry.type, "name": entry.name, "when": entry.when.timestamp()} for entry in self._history], f)
+            json.dump([{"type": entry.type, "name": entry.name, "when": str(int(entry.when.timestamp()))} for entry in self._history], f)
     
     def _add_history_entry(self, entry: DataPullHistoryEntry) -> DataPullHistoryEntry:
         self._history.append(entry)
