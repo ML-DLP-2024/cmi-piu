@@ -1,0 +1,64 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Distribution
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data
+*.csv
+*.tsv
+*.json
+*.zip
+*.tar
+*.gz
+*.h5
+*.npy
+*.npz
+
+# Models
+*.h5
+*.ckpt
+*.pb
+*.onnx
+*.pkl
+*.joblib
+*.pt
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+runs/
+events.out.tfevents.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# DVC
+.cache/
+
+# Secrets
+.env
+*.env
+kaggle.json
+
+# Temporary files
+temp/
+scratch/
+notebooks/temp/
