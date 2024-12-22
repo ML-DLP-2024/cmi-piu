@@ -114,7 +114,7 @@ python manage.py data delete kaggle child-mind-institute-problematic-internet-us
 List all the solutions:
 
 ```sh
-python -m manage.py solutions list
+python manage.py solutions list
 ```
 
 Example output:
@@ -130,5 +130,5 @@ Example output:
 Run the solution:
 
 ```sh
-python -m manage.py solutions run solution1 --source-type kaggle --source-name child-mind-institute-problematic-internet-use
+python manage.py solutions run solution1 --source-type kaggle --source-name child-mind-institute-problematic-internet-use
 ```
